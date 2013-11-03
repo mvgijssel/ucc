@@ -1,4 +1,7 @@
 {
   "project_id" : "waddenzee",
-  "conduit_uri" : "http://phab.wmc2.nl/"
+  "conduit_uri" : "http://phab.wmc2.nl/",
+  "arc.land.onto.default" : "master",
+  "base" : "git:branch-unique(master)"
 }
+
