@@ -1,4 +1,6 @@
 Waddenzee::Application.routes.draw do
+  get "accommodations/index"
+
   get "pages/home"
 
   get "pages/about"
