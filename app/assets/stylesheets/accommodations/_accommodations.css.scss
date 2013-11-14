@@ -1,0 +1,52 @@
+// Place all the styles related to the accommodations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.accommodation{
+}
+
+.accommodation-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accommodation-list-item{
+  display: table;
+  min-height: $accommodation-image-normal;
+  width:100%;
+  background: $white;
+  margin: 10px 0;
+
+}
+
+.accommodation-list-item-image{
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+  width: 120px;
+  line-height: 0px;
+
+}
+
+.accommodation-list-item-content{
+  vertical-align: top;
+  display: table-cell;
+  padding:10px;
+  min-height: $accommodation-image-normal
+}
+
+.accommodation-list-item-name{
+  font-family: $font-special;
+  font-weight: 400;
+  margin: 0;
+  padding: 0
+}
+
+.accommodation-list-item-intro{
+  font-family: $font-special;
+  margin: 5px 0px;
+  &:last-child{
+    margin: 5px 0px 0px;
+  }
+}

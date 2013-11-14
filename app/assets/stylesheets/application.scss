@@ -12,3 +12,7 @@
  *= require normalize-rails
  *= require_tree .
  */
+
+@import "base/mixins";
+@import "base/base";
+@import "accommodations/_accommodations";

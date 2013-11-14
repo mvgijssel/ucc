@@ -1,11 +1,11 @@
-<div class="accommodation">
-  <ul class="accommodation-list">
-    <li class="accommodation-list-item">
-      <h3 class="accommodation-list-item-name"><%= accommodation.title %>></h3>
-      <img class="accommodation-list-item-image" src="#">
-      <p class="accommodation-list-item-intro">
-        <%= accommodation.content %>
-      </p>
-    </li>
-  </ul>
-</div>
+<li class="accommodation-list-item">
+  <div class="accommodation-list-item-image">
+    <img src="http://lorempixel.com/120/120/city/<%= rand 1..10%>">
+  </div>
+  <div class="accommodation-list-item-content">
+    <h3 class="accommodation-list-item-name"><%= accommodation.title %></h3>
+    <p class="accommodation-list-item-intro">
+      <%= accommodation.content %>
+    </p>
+  </div>
+</li>
