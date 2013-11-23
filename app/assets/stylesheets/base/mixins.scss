@@ -13,3 +13,9 @@ $font-special: 'Noto Serif', serif;
 
 
 $accommodation-image-normal: 120px;
+
+/* Mainmenu mixins */
+$mainmenu-link-padding: 15px;
+$mainmenu-link-fontsize: 17px;
+$mainmenu-link-lineheight: $mainmenu-link-fontsize;
+$container-top-margin: ($mainmenu-link-padding * 2) + $mainmenu-link-fontsize;

@@ -14,4 +14,9 @@
 @import "base/mixins";
 @import "normalize-rails";
 @import "base/base";
+
+@import "layout/header";
+@import "layout/mainmenu";
+
 @import "accommodations/_accommodations";
+
