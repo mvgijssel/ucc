@@ -1,9 +1,25 @@
 Waddenzee::Application.routes.draw do
+
+
+  resources :projects, :only => [:show] do
+
+    resources :pages, :only => [:show]
+
+  end
+
+  get "projects/show"
+
   get "pages/home"
 
   get "pages/about"
 
-  get "pages/contact"
+  scope ":set_id" do
+
+    resources :pages, :only => [:show]
+
+  end
+
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,0 +1,54 @@
+config:
+    password_encryption: plain
+    syntax_version: 0.1
+
+users:
+    # username: password <- in the provided encryption
+    admin: admin        
+
+# create groups, with nesting
+groups:    
+    everyone:
+        members:
+            admin
+            
+    admins:
+        members:
+            admin
+        member_of:
+            page_moderator
+            media_moderator
+
+security:
+    
+    presets:
+        topic:
+            page_controller:            
+                everyone:                
+                    allow:                    
+                        index
+                        show
+                        
+                ?group_name:            
+                    allow: *
+        
+    # set name
+    software:
+        id: 1        
+        # default handles how the 'root' path is handled
+        default: true
+        
+        # members of the set, changes the 'index' / 'all' action?
+        members:
+            games
+        member_of:
+            games
+        presets:
+            topic:
+                ?group_name: software_group        
+    
+    games:
+        id: 2
+        presets:
+            topic:
+                ?group_name: games_group

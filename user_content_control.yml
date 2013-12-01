@@ -1,0 +1,78 @@
+config:
+
+  # the target database tables
+  database:
+
+    # the user table
+    user:
+      table: user
+      id: id
+
+    # the user group table
+    group:
+      table: usergroup
+      id: id
+
+    # the relationship database, connecting users to user groups
+    membership:
+      table: group_membership
+      id: id
+      user_id: user_id
+      group_id: group_id
+
+  # current syntax version
+  syntax: 0.2
+
+  # the code weaving configuration
+  weaving:
+    model: request / inherited / preload # how the weaving of functionality is done
+    controller: request / inherited / preload # how the weaving of functionality is done
+
+# the actual user groups, wil be combined with the users table
+# automatic groups are: everyone, authenticated_users (determined by call to is_authenticated? on User model object), root -> access to everything!
+groups:
+
+  admins
+
+# the sets / containers / folders of the application with associated security
+set:
+
+  root_set:
+
+    set_id: * # all the descending sets
+    set_id: 0 # the id for the root rows is 0
+    set_id: nil # all the descending sets
+
+    set_target_id: nil # nil defines the 'root'
+
+    # model affected by the setting, if the set_id is *, then no default scope is applied
+    model: nil # no models are affected, because the set is not defined
+
+    security:
+
+      page_controller:
+        everyone:
+          allow:
+            show
+            index
+
+  project_set:
+
+    set_id: 1
+    set_target_id: project_id # the request param name which contains the id
+    model: page # models affected by the set, defined default_scope
+
+    security:
+
+      page_controller:
+
+        everyone:
+          deny: *
+
+        # the name of the set + a group name creates dynamically a group
+        project_set_admins:
+          allow: *
+        project_set_users:
+          allow:
+            show
+            index
