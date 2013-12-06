@@ -30,7 +30,7 @@ module UCC
         raise 'config file not set' if @config_file.nil?
 
         # get the file content
-        file_content = @config_file
+        file_content = File.read @config_file
 
         # convert the file content to a hash
         data = YAML.load file_content
@@ -70,8 +70,19 @@ module UCC
         # get the params from the current uri, only controller params are returned
         params = Rails.application.routes.recognize_path current_uri
 
+        # which container is active?
+
+        matches = Array.new
+
+        @containers.each do |set_container|
 
 
+
+        end
+
+        raise "No container matches the current request '#{current_uri}'" if matches.length == 0
+
+        raise "More than 1 match for the current request '#{current_uri}': #{matches.inspect}"
 
 
       end
