@@ -2,17 +2,41 @@ module UCC
 
   class SetContainer
 
-    attr_accessor :name, :model, :controller
+    attr_accessor :name, :model, :controller, :groups, :id, :parent, :security_descriptor
 
-    def initialize name, data
+    def initialize(name, data)
 
-      name = name
+      self.name = name
 
-      model = data[:model]
+      self.model = data[:model]
 
-      controller = data[:controller]
+      self.controller = data[:controller]
 
-      id = data[:id]
+      self.id = data[:id]
+
+      self.groups = data[:groups]
+
+      self.security_descriptor = UCC::SecurityDescriptor.new
+
+    end
+
+    def match_request?(params)
+
+      # get the requests for this container
+      requests = associated_request
+
+
+       false
+
+    end
+
+    def associated_request
+
+      request = [controller]
+
+      request.concat(parent.associated_request) unless parent.nil?
+
+      return request
 
     end
 

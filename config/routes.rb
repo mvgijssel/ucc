@@ -6,6 +6,8 @@ Waddenzee::Application.routes.draw do
 
   end
 
+  resources :pages
+
   #scope ':shine_id' do
   #
   #  resources :pages, :only =>  [:show]

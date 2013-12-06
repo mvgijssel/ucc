@@ -1,5 +1,3 @@
-syntax: 1.0
-
 # the configuration of the application
 config:
 
@@ -34,17 +32,15 @@ config:
 # all the container definitions + request matching rules
 container:
 
-  root:
-    controller: application
-    model: nil
+  root:    
     id: 1
-
+    controller: application_controller
     groups:
-      root_admin
+      admin
 
   # model name of the container
   project:
-    controller: projects
+    controller: projects_controller
     model: project
     id: 2
 
@@ -60,17 +56,21 @@ container:
 security:
 
   root:
-    page_controller:
+    pages_controller:
+      everyone:
+        allow: ~
+    media_controller:
       everyone:
         allow: ~
 
     # nesting of the containers, determines how the matching is done
     # this case: MUST MATCH root + project -> nil + project_id -> project_id
     project:
-      page_controller:
+      pages_controller:
         project_user:
           allow:
             index
             show
         project_admin:
           allow: ~
+

@@ -1,5 +1,6 @@
 load "#{Rails.root}/ucc/set_container.rb"
 load "#{Rails.root}/ucc/parser.rb"
+load "#{Rails.root}/ucc/security_descriptor.rb"
 
 module UCC
 
@@ -70,19 +71,35 @@ module UCC
         # get the params from the current uri, only controller params are returned
         params = Rails.application.routes.recognize_path current_uri
 
-        # which container is active?
-
+        # instantiate new array for all the matches
         matches = Array.new
 
-        @containers.each do |set_container|
 
 
+        # the container array to a array of possible items in the request
+        # container -> how the request for that container would look like
+        # compare with the actual request (params) -> array of arrays
+        # but what to do with controller: page, because it is not a container
+        # first remove all non containers?
+
+
+
+
+
+
+        @containers.each do |name, set_container|
+
+           if set_container.match_request? params
+
+             matches << set_container
+
+           end
 
         end
 
-        raise "No container matches the current request '#{current_uri}'" if matches.length == 0
+        #raise "No container matches the current request '#{current_uri}'" if matches.length == 0
 
-        raise "More than 1 match for the current request '#{current_uri}': #{matches.inspect}"
+        #raise "More than 1 match for the current request '#{current_uri}': #{matches.inspect}"
 
 
       end
