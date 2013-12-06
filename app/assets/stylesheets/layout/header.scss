@@ -1,12 +1,43 @@
 header {
-  background: #2673b4;
+  background: white;
   position: fixed;
   top: 0;
   width: 100%;
 }
 
+.header{
+  margin-left: auto;
+  margin-right: auto;
+  width: $container-width;
+}
+
 .logo{
+  text-indent: -9999px;
+  background:image-url("logo_symbol.svg") no-repeat center;
+  width: 65px;
+  overflow: hidden;
   float: left;
   height: $container-top-margin;
   display: inline-block;
 }
+
+
+.landing-header{
+  height: 500px;
+  background:image-url("meeuwen.png") no-repeat center;
+  width: 100%;
+}
+
+.landing-header h1{
+  text-align: center;
+  top: 20px;
+}
+
+.landing-header-cell{
+  padding:20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: $container-width;
+}
+
+

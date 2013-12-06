@@ -1,6 +1,10 @@
 $color-primary: #eee;
 $color-secondary: #d2c8bc;
 
+$color-dark-blue: #005aa3;
+$color-light-blue: #26a9e0;
+$container-width: 900px;
+
 $color-1: $color-primary;
 $color-2: $color-secondary;
 $color-3: #494949;
@@ -8,7 +12,7 @@ $color-4: #e8404d;
 
 $white: white;
 
-$font-general: arial;
+$font-general: 'Open Sans', sans-serif;;
 $font-special: 'Noto Serif', serif;
 
 
@@ -16,6 +20,6 @@ $accommodation-image-normal: 120px;
 
 /* Mainmenu mixins */
 $mainmenu-link-padding: 15px;
-$mainmenu-link-fontsize: 17px;
+$mainmenu-link-fontsize: 15px;
 $mainmenu-link-lineheight: $mainmenu-link-fontsize;
 $container-top-margin: ($mainmenu-link-padding * 2) + $mainmenu-link-fontsize;

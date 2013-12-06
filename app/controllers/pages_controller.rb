@@ -1,6 +1,5 @@
 class PagesController < ApplicationController
   def home
-    @disable_mainmenu = true
   end
 
   def about

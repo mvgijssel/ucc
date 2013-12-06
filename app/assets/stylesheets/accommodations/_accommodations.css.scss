@@ -50,9 +50,35 @@
 }
 
 .accommodation-list-item-intro{
+  height: 70px;
+  overflow: hidden;
   font-family: $font-special;
   margin: 5px 0px;
   &:last-child{
     margin: 5px 0px 0px;
   }
+}
+
+.three-columns .accommodation-list-item{
+  width: 280px;
+  display: inline-block;
+  float: left;
+  margin:10px;
+  vertical-align: top;
+  box-sizing: border-box;
+  border:1px #e6e6e6 solid;
+}
+
+.three-columns .accommodation-list-item-image{
+  display: block;
+}
+
+.three-columns .accommodation-list-item-content{
+  display: block;
+  min-height: 100px;
+}
+
+.accommodation-list-item-buttons{
+  display: block;
+  padding: 0px 10px 10px;
 }
