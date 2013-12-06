@@ -1,7 +1,28 @@
 module UCC
 
   class Parser
-    # To change this template use File | Settings | File Templates.
+
+    class << self
+
+      def parse security_model, data
+
+        config = data[:config]
+
+        # create the set containers
+        security_model.containers = create_containers data[:container]
+
+        security = data[:security]
+
+      end
+
+      def create_containers data
+
+
+
+      end
+
+    end
+
   end
 
 end

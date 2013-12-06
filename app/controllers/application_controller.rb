@@ -9,9 +9,14 @@ class ApplicationController < ActionController::Base
 
     load("#{Rails.root}/ucc/security_model.rb")
 
-    UCC::SecurityModel.config_file = "#{Rails.root}/user_content_control.yml"
+    # set the config file
+    UCC::SecurityModel.config_file = "#{Rails.root}/ucc.yml"
+
+    # parse the config file
     UCC::SecurityModel.parse
-    UCC::SecurityModel.handle_request
+
+    # handle the request
+    UCC::SecurityModel.handle_request request
 
   end
 
