@@ -1,24 +1,16 @@
 Waddenzee::Application.routes.draw do
 
+  resources :projects do
 
-  resources :projects, :only => [:show] do
-
-    resources :pages, :only => [:show]
-
-  end
-
-  get "projects/show"
-
-  get "pages/home"
-
-  get "pages/about"
-
-  scope ":set_id" do
-
-    resources :pages, :only => [:show]
+    resources :pages
 
   end
 
+  #scope ':shine_id' do
+  #
+  #  resources :pages, :only =>  [:show]
+  #
+  #end
 
 
   # The priority is based upon order of creation:

@@ -1,78 +1,76 @@
+syntax: 1.0
+
+# the configuration of the application
 config:
 
+  exclude_models: User
+
   # the target database tables
-  database:
+  db:
 
     # the user table
     user:
-      table: user
+      name: user
       id: id
 
     # the user group table
     group:
-      table: usergroup
+      name: usergroup
       id: id
 
     # the relationship database, connecting users to user groups
     membership:
-      table: group_membership
+      name: group_membership
       id: id
       user_id: user_id
       group_id: group_id
-
-  # current syntax version
-  syntax: 0.2
 
   # the code weaving configuration
   weaving:
     model: request / inherited / preload # how the weaving of functionality is done
     controller: request / inherited / preload # how the weaving of functionality is done
 
-# the actual user groups, wil be combined with the users table
-# automatic groups are: everyone, authenticated_users (determined by call to is_authenticated? on User model object), root -> access to everything!
-groups:
 
-  admins
+# all the container definitions + request matching rules
+container:
+
+  root:
+    controller: application
+    model: nil
+    id: 1
+
+    groups:
+      root_admin
+
+  # model name of the container
+  project:
+    controller: projects
+    model: project
+    id: 2
+
+    # the user groups the container creates
+    groups:
+      # user groups created by the container
+       # -> something like: project_user_1_group, 1 is the id of the project model
+      project_user
+      project_admin
+
 
 # the sets / containers / folders of the application with associated security
-set:
+security:
 
-  root_set:
+  root:
+    page_controller:
+      everyone:
+        allow: ~
 
-    set_id: * # all the descending sets
-    set_id: 0 # the id for the root rows is 0
-    set_id: nil # all the descending sets
-
-    set_target_id: nil # nil defines the 'root'
-
-    # model affected by the setting, if the set_id is *, then no default scope is applied
-    model: nil # no models are affected, because the set is not defined
-
-    security:
-
+    # nesting of the containers, determines how the matching is done
+    # this case: MUST MATCH root + project -> nil + project_id -> project_id
+    project:
       page_controller:
-        everyone:
+        project_user:
           allow:
-            show
             index
-
-  project_set:
-
-    set_id: 1
-    set_target_id: project_id # the request param name which contains the id
-    model: page # models affected by the set, defined default_scope
-
-    security:
-
-      page_controller:
-
-        everyone:
-          deny: *
-
-        # the name of the set + a group name creates dynamically a group
-        project_set_admins:
-          allow: *
-        project_set_users:
-          allow:
             show
-            index
+        project_admin:
+          allow: ~

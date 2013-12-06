@@ -1,0 +1,12 @@
+<h1>Project: <%= @project.name %></h1>
+<p>list of pages:</p>
+<table>
+  <tr>
+    <th>page id</th>
+    <th>page name</th>
+    <th>link</th>
+  </tr>
+
+  <%= render @pages %>
+
+</table>

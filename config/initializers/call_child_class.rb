@@ -74,7 +74,7 @@ end
 #end
 
 #
-ActiveRecord::Base.send(:include, SubclassCatcher)
+#ActiveRecord::Base.send(:include, SubclassCatcher)
 
 # remove class definition from memory,
 # because inherited is only called when class method is defined
