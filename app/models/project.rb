@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
     arr = Array.new
 
     # replace the items in the groups array with group objects
-    groups.map! { |name| Group.find_by_name(group_name name) }
+    groups.map! { |name| UserGroup.find_by_name(group_name name) }
 
   end
 
@@ -45,7 +45,7 @@ class Project < ActiveRecord::Base
 
     groups.each do |name|
 
-      Group.create!(:name => group_name(name))
+      UserGroup.create!(:name => group_name(name))
 
     end
 
@@ -58,7 +58,7 @@ class Project < ActiveRecord::Base
 
     groups.each do |name|
 
-      Group.find_by_name(group_name(name)).destroy
+      UserGroup.find_by_name(group_name(name)).destroy
 
     end
 

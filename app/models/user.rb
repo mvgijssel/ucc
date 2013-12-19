@@ -9,21 +9,10 @@ class User < ActiveRecord::Base
 
 
   # need to be defined!
-  has_many :relationships, :dependent => :destroy
+  has_many :group_memberships, :dependent => :destroy
 
   # source determines the foreign key in the relationships table -> group_id
-  has_many :member_of, :through => :relationships, :source => :group
+  has_many :member_of, :through => :group_memberships, :source => :user_group
 
-
-
-  # join a group
-  def join group
-
-  end
-
-  # leave a group
-  def leave group
-
-  end
 
 end

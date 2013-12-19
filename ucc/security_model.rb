@@ -1,4 +1,4 @@
-load "#{Rails.root}/ucc/set_container.rb"
+load "#{Rails.root}/ucc/collection.rb"
 load "#{Rails.root}/ucc/parser.rb"
 load "#{Rails.root}/ucc/security_descriptor.rb"
 
@@ -44,22 +44,22 @@ module UCC
 
       end
 
-      def active_container
+      def active_collection
 
         # return the active container
-        @active_container
+        @active_collection
 
       end
 
-      def containers
+      def collections
 
-        @containers
+        @collections
 
       end
 
-      def containers=(containers)
+      def collections=(collections)
 
-        @containers = containers
+        @collections = collections
 
       end
 
@@ -85,13 +85,11 @@ module UCC
 
 
 
+        @collections.each do |name, collection|
 
+           if collection.match_request? params
 
-        @containers.each do |name, set_container|
-
-           if set_container.match_request? params
-
-             matches << set_container
+             matches << collection
 
            end
 

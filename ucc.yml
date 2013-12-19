@@ -29,24 +29,24 @@ config:
     controller: request / inherited / preload # how the weaving of functionality is done
 
 
-# all the container definitions + request matching rules
-container:
+# all the collection definitions + request matching rules
+collections:
 
-  root:    
-    id: 1
-    controller: application_controller
+  # root / application is predefined
+  root:
     groups:
       admin
 
-  # model name of the container
+  # model name of the collection
   project:
-    controller: projects_controller
-    model: project
-    id: 2
 
-    # the user groups the container creates
+    # the url parameter which the determines the collection_id
+    # which collection of the collections is active
+    param: projects_controller
+
+    # the user groups the collection creates
     groups:
-      # user groups created by the container
+      # user groups created by the collection
        # -> something like: project_user_1_group, 1 is the id of the project model
       project_user
       project_admin
@@ -56,9 +56,13 @@ container:
 security:
 
   root:
+
     pages_controller:
-      everyone:
-        allow: ~
+
+      page_editor:
+        allow:
+          ~
+
     media_controller:
       everyone:
         allow: ~
@@ -66,11 +70,15 @@ security:
     # nesting of the containers, determines how the matching is done
     # this case: MUST MATCH root + project -> nil + project_id -> project_id
     project:
+
       pages_controller:
-        project_user:
-          allow:
-            index
-            show
-        project_admin:
+
+        groupaccount_admin:
           allow: ~
+
+        groupaccount_member:
+          allow:
+            - index
+            - show
+            - edit
 

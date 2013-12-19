@@ -9,72 +9,73 @@ module UCC
         # create the configuration
         config = data[:config]
 
-        # create the set containers
-        containers = create_containers data[:container]
+        # create the collections
+        collections = create_collections data[:collections]
 
         # create the security objects
-        create_security_descriptors containers, data[:security], nil, true
+        create_security_descriptors collections, data[:security], nil, true
 
-        # copy the containers to the security model
-        security_model.containers = containers
+        # copy the collections to the security model
+        security_model.collections = collections
 
       end
 
       private
 
-      def create_containers(data)
+      def create_collections(data)
 
-        containers = Hash.new
+        collections = Hash.new
 
         data.each do |name, value|
 
-          containers[name] = SetContainer.new name, value
+          collections[name] = Collection.new name, value
 
         end
 
-        return containers
+        return collections
 
       end
 
-      def is_container?(name, containers)
+      def is_collection?(name, collection)
 
-        containers.has_key? name
+        collection.has_key? name
 
       end
 
       def is_controller?(name)
 
         # double bang converts to true or false
-        !!(name =~ /_controller/)
+        # check if the last part of the name contains _controller
+        !!(name =~ /_controller$/)
 
       end
 
-      def create_security_descriptors(containers, data, parent, is_root = false)
+      def create_security_descriptors(collections, data, parent, is_root = false)
 
         # can only be 1 root
         data.each do |node, children|
 
           # is controller?
-          is_container = false
+          is_collection = false
           is_controller = false
 
-          if is_container? node, containers
+          if is_collection? node, collections
 
-            is_container = true
+            is_collection = true
 
           end
 
           if is_controller? node
 
-            raise "Node #{node} cannot match to both a controller and a container" if is_container
+            raise "Node #{node} cannot match to both a controller and a collection" if is_collection
 
-            raise "Controller '#{node}' should be defined within a container" if is_root
+            raise "Controller '#{node}' should be defined within a collection" if is_root
 
             is_controller = true
 
           end
 
-          raise "Node '#{node}' didn't match anything" if !is_controller && !is_container
+          raise "Node '#{node}' didn't match a Container or a Controller" if !is_controller && !is_collection
 
           if is_controller
 
@@ -83,17 +84,17 @@ module UCC
 
           end
 
-          if is_container
+          if is_collection
 
             # get the container
-            container = containers[node]
+            collection = collections[node]
 
             # set the parent
-            container.parent = parent
+            collection.parent = parent
 
             # do stuff for a container
             # container can contain other containers
-            create_security_descriptors(containers, children, container)
+            create_security_descriptors(collections, children, collection)
 
           end
 

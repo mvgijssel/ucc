@@ -1,6 +1,6 @@
 module UCC
 
-  class SetContainer
+  class Collection
 
     attr_accessor :name, :model, :controller, :groups, :id, :parent, :security_descriptor
 
@@ -22,7 +22,7 @@ module UCC
 
     def match_request?(params)
 
-      # get the requests for this container
+      # get the requests for this collection
       requests = associated_request
 
 

@@ -11,12 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131203134333) do
+ActiveRecord::Schema.define(:version => 20131219092709) do
 
-  create_table "groups", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "collection_relationships", :force => true do |t|
+    t.integer  "collection_id"
+    t.string   "collection_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "model_id"
+    t.string   "model_type"
+  end
+
+  create_table "group_memberships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "user_group_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "pages", :force => true do |t|
@@ -32,19 +42,10 @@ ActiveRecord::Schema.define(:version => 20131203134333) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "relationships", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "group_id"
+  create_table "user_groups", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "set_relations", :force => true do |t|
-    t.integer  "set_id"
-    t.integer  "set_container_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "set_object_id"
   end
 
   create_table "users", :force => true do |t|

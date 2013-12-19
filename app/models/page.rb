@@ -7,32 +7,33 @@ class Page < ActiveRecord::Base
   # - set_container_id to the current container id
 
 
-  # polymorphic relations??
 
-  has_many :set_relations, :dependent => :destroy, :foreign_key => 'set_object_id'
+  # because of dependent => destroy, will be removed when object removed
+  # the as: model indicates a polymorphic relationship
+  has_many :collection_relationships, :dependent => :destroy, as: :model
 
-  after_create :create_set_relation
+  after_create :create_collection_relationship
 
 
-  #def self.default_scope
-  #
-  #  set_id = UCC::Request.request[:id]
-  #
-  #  set_container_id = 1
-  #
-  #  joins(:set_relations).
-  #      where("set_relations.set_id = ?", set_id).
-  #      where("set_relations.set_container_id = ?", set_container_id)
-  #
-  #end
+  def self.default_scope
 
-  def create_set_relation
+    #set_id = UCC::Request.request[:id]
 
-    set_id = 1
+    collection_id = 1
+    collection_name = 'root'
 
-    set_container_id = 1
+    joins(:collection_relationships).
+        where("collection_relationships.collection_id = ?", collection_id).
+        where("collection_relationships.collection_name = ?", collection_name)
 
-    self.set_relations.create!(:set_id => set_id, :set_container_id => set_container_id)
+  end
+
+  def create_collection_relationship
+
+    collection_id = 1
+    collection_type = 'root'
+
+    self.collection_relationships.create!(:collection_id => collection_id, :collection_type => collection_type)
 
   end
 
