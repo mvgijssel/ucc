@@ -32,13 +32,24 @@ config:
 # all the collection definitions + request matching rules
 collections:
 
-  # root / application is predefined
   root:
+
+    # groups for the root
     groups:
-      admin
+      - admin
 
   # model name of the collection
   project:
+
+    models:
+      - page
+
+    class: project
+
+    # the parent collection
+    # reason not using yml nesting for parent/child relationship:
+    # - because different files can contain collection definitions, would be very difficult merging with appropriate nesting levels
+    parent: root
 
     # the url parameter which the determines the collection_id
     # which collection of the collections is active
@@ -48,8 +59,17 @@ collections:
     groups:
       # user groups created by the collection
        # -> something like: project_user_1_group, 1 is the id of the project model
-      project_user
-      project_admin
+      - project_user
+      - project_admin
+
+  kek:
+
+    parent: project
+
+    param: kek_id
+
+    groups:
+      - kek_admin
 
 
 # the sets / containers / folders of the application with associated security
@@ -67,18 +87,18 @@ security:
       everyone:
         allow: ~
 
-    # nesting of the containers, determines how the matching is done
-    # this case: MUST MATCH root + project -> nil + project_id -> project_id
-    project:
+  # nesting of the containers, determines how the matching is done
+  # this case: MUST MATCH root + project -> nil + project_id -> project_id
+  project:
 
-      pages_controller:
+    pages_controller:
 
-        groupaccount_admin:
-          allow: ~
+      groupaccount_admin:
+        allow: ~
 
-        groupaccount_member:
-          allow:
-            - index
-            - show
-            - edit
+      groupaccount_member:
+        allow:
+          - index
+          - show
+          - edit
 

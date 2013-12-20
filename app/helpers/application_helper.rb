@@ -6,4 +6,10 @@ module ApplicationHelper
 
   end
 
+  def current_collection
+
+    UCC::SecurityModel.active_collection
+
+  end
+
 end

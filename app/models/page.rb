@@ -17,14 +17,13 @@ class Page < ActiveRecord::Base
 
   def self.default_scope
 
-    #set_id = UCC::Request.request[:id]
 
     collection_id = 1
-    collection_name = 'root'
+    collection_type = 'root'
 
     joins(:collection_relationships).
         where("collection_relationships.collection_id = ?", collection_id).
-        where("collection_relationships.collection_name = ?", collection_name)
+        where("collection_relationships.collection_type = ?", collection_type)
 
   end
 

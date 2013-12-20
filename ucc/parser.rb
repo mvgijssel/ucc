@@ -6,16 +6,20 @@ module UCC
 
       def parse(security_model, data)
 
+
         # create the configuration
-        config = data[:config]
+        config      = data[:config]
 
         # create the collections
         collections = create_collections data[:collections]
 
-        # create the security objects
-        create_security_descriptors collections, data[:security], nil, true
+        # update the collections now all collections are known
+        update_collections collections
 
-        # copy the collections to the security model
+        # create the security objects
+        create_security_descriptors collections, data[:security]
+
+        # update the collections on the model
         security_model.collections = collections
 
       end
@@ -24,11 +28,19 @@ module UCC
 
       def create_collections(data)
 
-        collections = Hash.new
+        # so can be accesses with both symbols and strings
+        collections = HashWithIndifferentAccess.new
 
-        data.each do |name, value|
+        data.each do |collection_name, collection_settings|
 
-          collections[name] = Collection.new name, value
+          # create a new collection from the data
+          collections[collection_name] = Collection.new(
+              collection_name,
+              collection_settings[:groups],
+              collection_settings[:parent],
+              collection_settings[:param],
+              collection_settings[:model]
+          )
 
         end
 
@@ -36,67 +48,128 @@ module UCC
 
       end
 
-      def is_collection?(name, collection)
+      def update_collections(collections)
 
-        collection.has_key? name
+        collections.each do |collection_name, collection|
 
-      end
+          update_parent collections, collection
 
-      def is_controller?(name)
+          define_requests collection
 
-        # double bang converts to true or false
-        # check if the last part of the name contains _controller
-        !!(name =~ /_controller$/)
+        end
 
       end
 
-      def create_security_descriptors(collections, data, parent, is_root = false)
+      def update_parent(collections, collection)
 
-        # can only be 1 root
-        data.each do |node, children|
+        # if the collection has the parent property defined
+        unless collection.parent.nil?
 
-          # is controller?
-          is_collection = false
-          is_controller = false
+          if collections.has_key? collection.parent
 
-          if is_collection? node, collections
+            # store the actual collection in the parent property
+            collection.parent = collections[collection.parent]
 
-            is_collection = true
+          else
 
-          end
-
-          if is_controller? node
-
-            raise "Node #{node} cannot match to both a controller and a collection" if is_collection
-
-            raise "Controller '#{node}' should be defined within a collection" if is_root
-
-            is_controller = true
+            # collection with the provided name doesn't exist
+            raise "Unknown collection parent '#{collection.parent}'"
 
           end
 
-          raise "Node '#{node}' didn't match a Container or a Controller" if !is_controller && !is_collection
+        end
 
-          if is_controller
+      end
 
-            # controller is a part of the security descriptor
-            parent.security_descriptor.add node, children
+      def remove_controller_string(string)
 
-          end
+        string.sub(%r{_controller$}, '')
 
-          if is_collection
+      end
 
-            # get the container
-            collection = collections[node]
+      def define_requests(collection)
 
-            # set the parent
-            collection.parent = parent
+        top_request = requests_from_param(collection.param, true)
 
-            # do stuff for a container
-            # container can contain other containers
-            create_security_descriptors(collections, children, collection)
+        requests = Array.new
 
-          end
+        current_collection = collection
+
+        until current_collection.parent.nil?
+
+          # set the parent as the current collection
+          current_collection = current_collection.parent
+
+          # get the possible requests based on the param property
+          r = requests_from_param(current_collection.param)
+
+          # only add the request if isn't empty
+          requests << r unless r.empty?
+
+        end
+
+        requests = top_request.product(*requests)
+
+        requests = top_request if requests.empty?
+
+        collection.requests = requests
+
+      end
+
+      def requests_from_param(param, last = false)
+
+        matches = Array.new
+
+        # switch on param
+        case param
+
+          # when the last part is _controller
+          when /_controller$/
+
+            if last
+
+              matches << {:controller => remove_controller_string(param)}
+
+            end
+
+            matches << {"#{remove_controller_string(param).singularize}_id".to_sym => true}
+
+          # when not nil
+          when /.+/
+
+            matches << {param.to_sym => true}
+
+          else
+
+            # do nothing
+
+        end
+
+        return matches
+
+      end
+
+      def create_security_descriptors(collections, data)
+
+        data.each do |collection_name, value|
+
+          raise "Error in security descriptor: unknown collection '#{collection_name}'" unless collections.has_key? collection_name
+
+          # add controllers to the security descriptor
+          add_controllers_to_descriptor(
+              collections[collection_name].security_descriptor,
+              value
+          )
+
+        end
+
+      end
+
+      def add_controllers_to_descriptor(security_descriptor, data)
+
+        data.each do |controller, value|
+
+          security_descriptor.add(controller, value)
 
         end
 

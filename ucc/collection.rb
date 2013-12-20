@@ -2,41 +2,23 @@ module UCC
 
   class Collection
 
-    attr_accessor :name, :model, :controller, :groups, :id, :parent, :security_descriptor
+    attr_accessor :name, :groups, :parent, :param, :model, :security_descriptor, :requests, :id, :type
 
-    def initialize(name, data)
+    def initialize(name, groups, parent, param, model)
 
       self.name = name
 
-      self.model = data[:model]
+      self.type = name
 
-      self.controller = data[:controller]
+      self.groups = groups
 
-      self.id = data[:id]
+      self.parent = parent
 
-      self.groups = data[:groups]
+      self.param = param
+
+      self.model = (model.nil?)? (name) : (model)
 
       self.security_descriptor = UCC::SecurityDescriptor.new
-
-    end
-
-    def match_request?(params)
-
-      # get the requests for this collection
-      requests = associated_request
-
-
-       false
-
-    end
-
-    def associated_request
-
-      request = [controller]
-
-      request.concat(parent.associated_request) unless parent.nil?
-
-      return request
 
     end
 

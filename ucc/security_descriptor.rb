@@ -6,7 +6,7 @@ module UCC
 
     def initialize
 
-      self.controller = Hash.new
+      self.controller = HashWithIndifferentAccess.new
 
     end
 
